@@ -1,12 +1,12 @@
 import React from 'react';
+import Navbar from '../components/Navbar.jsx';
 
 function Home() {
   return (
-    <div className="home">
-      <h1>Welcome to the Recipe App</h1>
-      <p>Discover delicious recipes and share your own creations!</p>
-      <p>Use the navigation menu to explore different sections.</p>
-    </div>
+    <>
+      <Navbar />
+      <div className="text-black p-4">Home</div>
+    </>
   );
 }
 
