@@ -1,8 +1,8 @@
 function Cards({ cards, onViewRecipe }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
       {cards.map((card, index) => (
-        <div key={index} className="card bg-base-100 w-full max-w-96 shadow-lg hover:shadow-xl transition-shadow">
+        <div key={index} className="card bg-base-100 w-full shadow-lg hover:shadow-xl transition-shadow">
           <figure className="h-48 overflow-hidden">
             <img
               src={card.image}
@@ -14,7 +14,6 @@ function Cards({ cards, onViewRecipe }) {
             <h2 className="card-title text-lg font-bold">{card.title}</h2>
             <p className="text-sm text-gray-600 line-clamp-3">{card.description}</p>
             
-            {/* Recepten specifieke info */}
             <div className="flex gap-4 text-xs text-gray-500 mt-2">
               {card.cookingTime && (
                 <span className="flex items-center gap-1">
