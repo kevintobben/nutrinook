@@ -5,7 +5,7 @@ function Navbar() {
   const location = useLocation();
   
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-nutrinook-red-500 shadow-sm">
       <div className="navbar-start">
         <Link to="/" className="text-xl">Nutrinook</Link>
       </div>
