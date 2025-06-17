@@ -3,7 +3,6 @@ import Cards from '../components/Cards.jsx';
 import RecipeModal from '../components/RecipeModal.jsx';
 
 function Home() {
-  // Initialize recipes from localStorage or use default recipes
   const [recepten, setRecepten] = useState(() => {
     const savedRecepten = localStorage.getItem('recepten');
     if (savedRecepten) {
@@ -12,7 +11,6 @@ function Home() {
     return [];
   });
   
-  // Save recipes to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('recepten', JSON.stringify(recepten));
   }, [recepten]);
