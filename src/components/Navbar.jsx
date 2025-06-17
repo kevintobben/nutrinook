@@ -4,6 +4,10 @@ import { Link, useLocation } from 'react-router-dom';
 function Navbar() {
   const location = useLocation();
   
+  const openRecipeModal = () => {
+    document.getElementById('create-recipe-modal').showModal();
+  };
+  
   return (
     <div className="navbar bg-nutrinook-red-500 shadow-sm">
       <div className="navbar-start">
@@ -16,7 +20,7 @@ function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Instellingen</a>
+        <button onClick={openRecipeModal} className="btn bg-white text-nutrinook-red hover:bg-gray-100">Recept maken</button>
       </div>
     </div>
   );

@@ -1,50 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Cards from '../components/Cards.jsx';
+import RecipeModal from '../components/RecipeModal.jsx';
 
 function Home() {
-  const recepten = [
-    {
-      title: "Spaghetti Carbonara",
-      description: "Klassieke Italiaanse pasta met spek, ei en kaas. Een simpel maar heerlijk gerecht.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "20 min",
-      difficulty: "Gemakkelijk",
-      servings: 4
-    },
-    {
-      title: "Chicken Tikka Masala",
-      description: "Romige Indiase curry met gemarineerde kip in een rijke tomatensaus.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "45 min",
-      difficulty: "Gemiddeld",
-      servings: 6
-    },
-    {
-      title: "Vegetarische Chili",
-      description: "Heerlijke en vullende chili met bonen, groenten en specerijen. Perfect voor een koude dag.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "30 min",
-      difficulty: "Gemakkelijk",
-      servings: 4
-    },
-    {
-      title: "Vegetarische Chili",
-      description: "Heerlijke en vullende chili met bonen, groenten en specerijen. Perfect voor een koude dag.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "30 min",
-      difficulty: "Gemakkelijk",
-      servings: 4
-    },
-  ];
+  // Initialize recipes from localStorage or use default recipes
+  const [recepten, setRecepten] = useState(() => {
+    const savedRecepten = localStorage.getItem('recepten');
+    if (savedRecepten) {
+      return JSON.parse(savedRecepten);
+    }
+    return [];
+  });
+  
+  // Save recipes to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('recepten', JSON.stringify(recepten));
+  }, [recepten]);
 
   const handleViewRecipe = (recipe) => {
     console.log("Bekijk recept:", recipe);
+  };
+  
+  const handleAddRecipe = (newRecipe) => {
+    setRecepten(prev => [...prev, newRecipe]);
   };
 
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Recepten</h1>
       <Cards cards={recepten} onViewRecipe={handleViewRecipe} />
+      <RecipeModal onAddRecipe={handleAddRecipe} />
     </>
   );
 }

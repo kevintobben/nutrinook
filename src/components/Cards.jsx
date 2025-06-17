@@ -1,14 +1,19 @@
+import { Star } from "lucide-react";
+
 function Cards({ cards, onViewRecipe }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
       {cards.map((card, index) => (
         <div key={index} className="card bg-base-100 w-full shadow-lg hover:shadow-xl transition-shadow">
-          <figure className="h-48 overflow-hidden">
+          <figure className="h-48 overflow-hidden relative">
             <img
               src={card.image}
               alt={card.title}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             />
+            <button className="absolute top-2 right-2 p-1 bg-white bg-opacity-70 rounded-full hover:bg-opacity-100 transition-all">
+              <Star className="h-5 w-5 text-yellow-500" />
+            </button>
           </figure>
           <div className="card-body">
             <h2 className="card-title text-lg font-bold">{card.title}</h2>
