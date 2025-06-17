@@ -1,7 +1,7 @@
-import { X } from "lucide-react";
+import { X, Star, StarIcon } from "lucide-react";
 import { useEffect } from "react";
 
-function RecipeModal({ isOpen, onClose, recipe }) {
+function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites = [] }) {
   useEffect(() => {
     // Handle modal opening and closing
     const modal = document.getElementById('view-recipe-modal');
@@ -36,9 +36,24 @@ function RecipeModal({ isOpen, onClose, recipe }) {
             className="w-full h-full object-cover"
           />        </div>
 
-        {/* Recipe content */}
-        <div className="p-6">
-          <h2 className="text-3xl font-bold mb-2">{recipe.title}</h2>
+        {/* Recipe content */}        <div className="p-6">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-3xl font-bold">{recipe.title}</h2>
+            
+            <button 
+              className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite && onToggleFavorite(recipe);
+              }}
+            >
+              {favorites && favorites.some(fav => fav.title === recipe.title) ? (
+                <StarIcon className="h-6 w-6 text-yellow-500 fill-yellow-500" />
+              ) : (
+                <Star className="h-6 w-6 text-yellow-500" />
+              )}
+            </button>
+          </div>
           
           {/* Recipe meta information */}
           <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-600">

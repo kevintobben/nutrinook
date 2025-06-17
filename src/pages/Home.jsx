@@ -9,14 +9,31 @@ function Home() {
     if (savedRecepten) {
       return JSON.parse(savedRecepten);
     }
+    return []; // Return empty array as default when nothing in localStorage
+  });
+  
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      return JSON.parse(savedFavorites);
+    }
+    return []; // Return empty array as default
   });
   
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   
   useEffect(() => {
-    localStorage.setItem('recepten', JSON.stringify(recepten));
+    if (recepten) { // Only save to localStorage if recepten is defined
+      localStorage.setItem('recepten', JSON.stringify(recepten));
+    }
   }, [recepten]);
+  
+  useEffect(() => {
+    if (favorites) {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  }, [favorites]);
 
   const handleViewRecipe = (recipe) => {
     setSelectedRecipe(recipe);
@@ -28,17 +45,37 @@ function Home() {
   };
   
   const handleAddRecipe = (newRecipe) => {
-    setRecepten(prev => [...prev, newRecipe]);
+    setRecepten(prev => Array.isArray(prev) ? [...prev, newRecipe] : [newRecipe]);
   };
+  
+  const handleToggleFavorite = (recipe) => {
+    setFavorites(prev => {
+      const isFavorited = prev.some(fav => fav.title === recipe.title);
+      if (isFavorited) {
+        // Remove from favorites
+        return prev.filter(fav => fav.title !== recipe.title);
+      } else {
+        // Add to favorites
+        return [...prev, recipe];
+      }
+    });
+  };
+  
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Recepten</h1>
-      <Cards cards={recepten} onViewRecipe={handleViewRecipe} />
-      <MakeRecipeModal onAddRecipe={handleAddRecipe} />
+      <Cards 
+        cards={recepten} 
+        onViewRecipe={handleViewRecipe} 
+        onToggleFavorite={handleToggleFavorite} 
+        favorites={favorites} 
+      />      <MakeRecipeModal onAddRecipe={handleAddRecipe} />
       <RecipeModal 
         isOpen={isViewModalOpen}
         onClose={handleCloseViewModal}
         recipe={selectedRecipe}
+        onToggleFavorite={handleToggleFavorite}
+        favorites={favorites}
       />
     </>
   );

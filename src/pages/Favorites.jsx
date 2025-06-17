@@ -1,42 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Cards from '../components/Cards.jsx';
+import RecipeModal from '../components/RecipeModal.jsx';
 
 function Favorites() {
-  const recepten = [
-    {
-      title: "Pasta Penne Arrabbiata",
-      description: "Pasta met een pittige tomatensaus, knoflook en rode peper. Een klassieker uit de Italiaanse keuken.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "20 min",
-      difficulty: "Gemakkelijk",
-      servings: 2,
-    },
-    {
-      title: "Kogelbiefstuk met Groenten",
-      description: "Perfect gebakken kogelbiefstuk geserveerd met seizoensgebonden groenten en een rode wijnsaus.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "20 min",
-      difficulty: "Makkelijk",
-      servings: 2
-    },
-    {
-      title: "Vegetarische Chili",
-      description: "Heerlijke en vullende chili met bonen, groenten en specerijen. Perfect voor een koude dag.",
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      cookingTime: "30 min",
-      difficulty: "Gemakkelijk",
-      servings: 4
-    },
-  ];
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      return JSON.parse(savedFavorites);
+    }
+    return []; // Return empty array as default
+  });
+  
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  
+  useEffect(() => {
+    if (favorites) {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  }, [favorites]);
 
   const handleViewRecipe = (recipe) => {
-    console.log("Bekijk recept:", recipe);
+    setSelectedRecipe(recipe);
+    setIsViewModalOpen(true);
+  };
+  
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+  };
+  
+  const handleToggleFavorite = (recipe) => {
+    setFavorites(prev => {
+      const isFavorited = prev.some(fav => fav.title === recipe.title);
+      if (isFavorited) {
+        // Remove from favorites
+        return prev.filter(fav => fav.title !== recipe.title);
+      } else {
+        // Add to favorites
+        return [...prev, recipe];
+      }
+    });
   };
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-6">Recepten</h1>
-      <Cards cards={recepten} onViewRecipe={handleViewRecipe} />
+      <h1 className="text-2xl font-bold mb-6">Favorieten</h1>
+      <Cards 
+        cards={favorites} 
+        onViewRecipe={handleViewRecipe} 
+        onToggleFavorite={handleToggleFavorite} 
+        favorites={favorites}
+      />      <RecipeModal 
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        recipe={selectedRecipe}
+        onToggleFavorite={handleToggleFavorite}
+        favorites={favorites}
+      />
     </>
   );
 }
