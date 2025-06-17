@@ -3,14 +3,12 @@ import { useEffect } from "react";
 
 function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites = [] }) {
   useEffect(() => {
-    // Handle modal opening and closing
     const modal = document.getElementById('view-recipe-modal');
     if (isOpen && recipe && modal) {
       modal.showModal();
     }
   }, [isOpen, recipe]);
-  
-  // Early return if no recipe
+
   if (!recipe) return null;
   
   const handleClose = () => {

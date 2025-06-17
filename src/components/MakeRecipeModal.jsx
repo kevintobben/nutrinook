@@ -28,14 +28,14 @@ function MakeRecipeModal({ onAddRecipe }) {
   const incrementServings = () => {
     setNewRecipe(prev => ({
       ...prev,
-      servings: Math.min(prev.servings + 1, 12) // Maximum 12 servings
+      servings: Math.min(prev.servings + 1, 12)
     }));
   };
 
   const decrementServings = () => {
     setNewRecipe(prev => ({
       ...prev,
-      servings: Math.max(prev.servings - 1, 1) // Minimum 1 serving
+      servings: Math.max(prev.servings - 1, 1)
     }));
   };
 
@@ -48,7 +48,6 @@ function MakeRecipeModal({ onAddRecipe }) {
   };
 
   const addIngredient = () => {
-    // Validate that at least name is provided
     if (!newIngredient.name) {
       return;
     }
@@ -90,19 +89,15 @@ function MakeRecipeModal({ onAddRecipe }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Basic validation
     if (!newRecipe.title || !newRecipe.description) {
       alert('Vul alle verplichte velden in!');
       return;
     }
 
-    // Call the parent function to add the recipe
     onAddRecipe(newRecipe);
     
-    // Close the modal
     document.getElementById('create-recipe-modal').close();
     
-    // Reset the form
     setNewRecipe({
       title: '',
       description: '',

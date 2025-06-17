@@ -17,7 +17,7 @@ function Home() {
     if (savedFavorites) {
       return JSON.parse(savedFavorites);
     }
-    return []; // Return empty array as default
+    return [];
   });
   
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -52,10 +52,10 @@ function Home() {
     setFavorites(prev => {
       const isFavorited = prev.some(fav => fav.title === recipe.title);
       if (isFavorited) {
-        // Remove from favorites
+        // Verwijder uit favorieten
         return prev.filter(fav => fav.title !== recipe.title);
       } else {
-        // Add to favorites
+        // Voeg toe aan favorieten
         return [...prev, recipe];
       }
     });
@@ -69,7 +69,8 @@ function Home() {
         onViewRecipe={handleViewRecipe} 
         onToggleFavorite={handleToggleFavorite} 
         favorites={favorites} 
-      />      <MakeRecipeModal onAddRecipe={handleAddRecipe} />
+      />      
+      <MakeRecipeModal onAddRecipe={handleAddRecipe} />
       <RecipeModal 
         isOpen={isViewModalOpen}
         onClose={handleCloseViewModal}

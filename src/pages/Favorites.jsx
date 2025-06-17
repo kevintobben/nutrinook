@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cards from '../components/Cards.jsx';
 import RecipeModal from '../components/RecipeModal.jsx';
+import MakeRecipeModal from '../components/MakeRecipeModal.jsx';
 
 function Favorites() {
   const [favorites, setFavorites] = useState(() => {
@@ -8,7 +9,7 @@ function Favorites() {
     if (savedFavorites) {
       return JSON.parse(savedFavorites);
     }
-    return []; // Return empty array as default
+    return [];
   });
   
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -28,18 +29,30 @@ function Favorites() {
   const handleCloseViewModal = () => {
     setIsViewModalOpen(false);
   };
-  
-  const handleToggleFavorite = (recipe) => {
+    const handleToggleFavorite = (recipe) => {
     setFavorites(prev => {
       const isFavorited = prev.some(fav => fav.title === recipe.title);
       if (isFavorited) {
-        // Remove from favorites
+        // Verwijder uit favorieten
         return prev.filter(fav => fav.title !== recipe.title);
       } else {
-        // Add to favorites
+        // Voeg toe aan favorieten
         return [...prev, recipe];
       }
     });
+  };
+  
+  const handleAddRecipe = (newRecipe) => {
+    const savedRecepten = localStorage.getItem('recepten');
+    let recepten = [];
+    
+    if (savedRecepten) {
+      recepten = JSON.parse(savedRecepten);
+    }
+    
+    recepten = Array.isArray(recepten) ? [...recepten, newRecipe] : [newRecipe];
+    
+    localStorage.setItem('recepten', JSON.stringify(recepten));
   };
 
   return (
@@ -50,13 +63,14 @@ function Favorites() {
         onViewRecipe={handleViewRecipe} 
         onToggleFavorite={handleToggleFavorite} 
         favorites={favorites}
-      />      <RecipeModal 
+      />        <RecipeModal 
         isOpen={isViewModalOpen}
         onClose={handleCloseViewModal}
         recipe={selectedRecipe}
         onToggleFavorite={handleToggleFavorite}
         favorites={favorites}
       />
+      <MakeRecipeModal onAddRecipe={handleAddRecipe} />
     </>
   );
 }
