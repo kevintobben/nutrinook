@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cards from '../components/Cards.jsx';
-import RecipeModal from '../components/RecipeModal.jsx';
+import RecipeModal from '../components/MakeRecipeModal.jsx';
 
 function Home() {
   const [recepten, setRecepten] = useState(() => {
