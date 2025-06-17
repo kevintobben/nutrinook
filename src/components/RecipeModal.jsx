@@ -1,0 +1,126 @@
+import { X } from "lucide-react";
+import { useEffect } from "react";
+
+function RecipeModal({ isOpen, onClose, recipe }) {
+  useEffect(() => {
+    // Handle modal opening and closing
+    const modal = document.getElementById('view-recipe-modal');
+    if (isOpen && recipe && modal) {
+      modal.showModal();
+    }
+  }, [isOpen, recipe]);
+  
+  // Early return if no recipe
+  if (!recipe) return null;
+  
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+
+  return (
+    <dialog id="view-recipe-modal" className="modal" onClose={handleClose}>
+      <div className="modal-box w-11/12 max-w-4xl p-0 overflow-hidden">
+        {/* Close button */}
+        <button 
+          onClick={handleClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors z-10 bg-white bg-opacity-70"
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        {/* Recipe image header */}
+        <div className="h-64 w-full relative">
+          <img 
+            src={recipe.image} 
+            alt={recipe.title} 
+            className="w-full h-full object-cover"
+          />        </div>
+
+        {/* Recipe content */}
+        <div className="p-6">
+          <h2 className="text-3xl font-bold mb-2">{recipe.title}</h2>
+          
+          {/* Recipe meta information */}
+          <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-600">
+            {recipe.cookingTime && (
+              <span className="flex items-center gap-1">
+                ⏱️ Bereidingstijd: {recipe.cookingTime}
+              </span>
+            )}
+            {recipe.difficulty && (
+              <span className="flex items-center gap-1">
+                📊 Moeilijkheidsgraad: {recipe.difficulty}
+              </span>
+            )}
+            {recipe.servings && (
+              <span className="flex items-center gap-1">
+                👥 Porties: {recipe.servings} personen
+              </span>
+            )}
+          </div>
+
+          {/* Recipe description */}
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-2">Beschrijving</h3>
+            <p className="text-gray-700">{recipe.description}</p>
+          </div>
+
+          {/* Ingredients section */}
+          {recipe.ingredients && recipe.ingredients.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Ingrediënten</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                {recipe.ingredients.map((ingredient, index) => (
+                  <li key={index} className="text-gray-700">
+                    {ingredient.amount && <span className="font-medium">{ingredient.amount} </span>}
+                    {ingredient.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Instructions section */}
+          {recipe.instructions && recipe.instructions.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Bereidingswijze</h3>
+              <ol className="list-decimal pl-5 space-y-3">
+                {recipe.instructions.map((step, index) => (
+                  <li key={index} className="text-gray-700">{step}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* Nutritional information (if available) */}
+          {recipe.nutritionalInfo && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Voedingswaarde (per portie)</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {Object.entries(recipe.nutritionalInfo).map(([key, value]) => (
+                  <div key={key} className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-gray-500 text-sm">{key}</p>
+                    <p className="font-semibold">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Additional notes */}
+          {recipe.notes && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-2">Tips & Notities</h3>
+              <p className="text-gray-700">{recipe.notes}</p>
+            </div>
+          )}
+        </div>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={handleClose}>Sluiten</button>
+      </form>
+    </dialog>
+  );
+}
+
+export default RecipeModal;

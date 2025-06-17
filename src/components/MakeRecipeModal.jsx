@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function RecipeModal({ onAddRecipe }) {
+function MakeRecipeModal({ onAddRecipe }) {
   const [newRecipe, setNewRecipe] = useState({
     title: '',
     description: '',
@@ -160,8 +160,7 @@ function RecipeModal({ onAddRecipe }) {
       <form method="dialog" className="modal-backdrop">
         <button>Sluiten</button>
       </form>
-    </dialog>
-  );
+    </dialog>  );
 }
 
-export default RecipeModal;
+export default MakeRecipeModal;
