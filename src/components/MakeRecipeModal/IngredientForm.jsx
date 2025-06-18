@@ -11,14 +11,16 @@ function IngredientForm({ newIngredient, handleIngredientChange, addIngredient }
         placeholder="Hoeveelheid"
         className="input input-bordered w-30"
       />
-      <input
-        type="text"
-        name="unit"
-        value={newIngredient.unit}
-        onChange={handleIngredientChange}
-        placeholder="Eenheid"
-        className="input input-bordered w-30"
-      />
+      <fieldset className="fieldset bordered w-30 p-0">
+        <select defaultValue="Kies een eenheid" className="select">
+          <option disabled={true} className="select-placeholder">Eenheid</option>
+          <option value="gram">Gram</option>
+          <option value="ml">Milliliter</option>
+          <option value="stuk">Stuk</option>
+          <option value="theelepel">Theelepel</option>
+          <option value="eetlepel">Eetlepel</option>
+        </select>
+      </fieldset>
       <input
         type="text"
         name="name"
@@ -39,3 +41,13 @@ function IngredientForm({ newIngredient, handleIngredientChange, addIngredient }
 }
 
 export default IngredientForm;
+
+
+      // <input
+      //   type="text"
+      //   name="unit"
+      //   value={newIngredient.unit}
+      //   onChange={handleIngredientChange}
+      //   placeholder="Eenheid"
+      //   className="input input-bordered w-30"
+      // />
