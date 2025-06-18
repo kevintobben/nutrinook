@@ -41,13 +41,3 @@ function IngredientForm({ newIngredient, handleIngredientChange, addIngredient }
 }
 
 export default IngredientForm;
-
-
-      // <input
-      //   type="text"
-      //   name="unit"
-      //   value={newIngredient.unit}
-      //   onChange={handleIngredientChange}
-      //   placeholder="Eenheid"
-      //   className="input input-bordered w-30"
-      // />
