@@ -5,16 +5,19 @@ import Home from './pages/Home'
 import Favorites from './pages/Favorites'
 import RecipeDetail from './pages/RecipeDetail'
 import Layout from './components/Layout'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/recipe/:id" element={<RecipeDetail />} />
-      </Routes>
-    </Layout>
+    <ErrorBoundary>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
+        </Routes>
+      </Layout>
+    </ErrorBoundary>
   )
 }
 
