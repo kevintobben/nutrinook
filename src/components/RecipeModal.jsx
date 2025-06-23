@@ -93,6 +93,7 @@ function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites, onR
                 {recipe.ingredients.map((ingredient, index) => (
                   <li key={index} className="text-gray-700">
                     {ingredient.amount && <span className="font-medium">{ingredient.amount} </span>}
+                    {ingredient.unit && <span>{ingredient.unit} </span>}
                     {ingredient.name}
                   </li>
                 ))}

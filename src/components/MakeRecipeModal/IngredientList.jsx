@@ -20,8 +20,8 @@ function IngredientList({ ingredients, toggleIngredientCheck, removeIngredient }
             onChange={() => toggleIngredientCheck(index)}
           />
           <div className="flex-1 flex">
-            <span className="font-medium mr-1">{ingredient.amount}</span>
-            <span className="mr-1">{ingredient.unit}</span>
+            {ingredient.amount && <span className="font-medium mr-1">{ingredient.amount}</span>}
+            {ingredient.unit && <span className="mr-1">{ingredient.unit}</span>}
             <span className="flex-1">{ingredient.name}</span>
           </div>
           <button 

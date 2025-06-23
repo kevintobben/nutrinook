@@ -11,16 +11,19 @@ function IngredientForm({ newIngredient, handleIngredientChange, addIngredient }
         placeholder="Hoeveelheid"
         className="input input-bordered w-30"
       />
-      <fieldset className="fieldset bordered w-30 p-0">
-        <select defaultValue="Kies een eenheid" className="select">
-          <option disabled={true} className="select-placeholder">Eenheid</option>
-          <option value="gram">Gram</option>
-          <option value="ml">Milliliter</option>
-          <option value="stuk">Stuk</option>
-          <option value="theelepel">Theelepel</option>
-          <option value="eetlepel">Eetlepel</option>
-        </select>
-      </fieldset>
+      <select 
+        name="unit"
+        value={newIngredient.unit}
+        onChange={handleIngredientChange}
+        className="select select-bordered w-30"
+      >
+        <option value="">Eenheid</option>
+        <option value="gram">Gram</option>
+        <option value="ml">Milliliter</option>
+        <option value="stuk">Stuk</option>
+        <option value="theelepel">Theelepel</option>
+        <option value="eetlepel">Eetlepel</option>
+      </select>
       <input
         type="text"
         name="name"
