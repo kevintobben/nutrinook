@@ -41,7 +41,11 @@ function Favorites() {
       }
     });
   };
-  
+
+  const handleRemoveRecipe = (recipe) => {
+    setFavorites(prev => prev.filter(fav => fav.title !== recipe.title));
+  };
+
   const handleAddRecipe = (newRecipe) => {
     const savedRecepten = localStorage.getItem('recepten');
     let recepten = [];
@@ -63,12 +67,14 @@ function Favorites() {
         onViewRecipe={handleViewRecipe} 
         onToggleFavorite={handleToggleFavorite} 
         favorites={favorites}
-      />        <RecipeModal 
+      />        
+      <RecipeModal 
         isOpen={isViewModalOpen}
         onClose={handleCloseViewModal}
         recipe={selectedRecipe}
         onToggleFavorite={handleToggleFavorite}
         favorites={favorites}
+        onRemoveRecipe={handleRemoveRecipe}
       />
       <MakeRecipeModal onAddRecipe={handleAddRecipe} />
     </>

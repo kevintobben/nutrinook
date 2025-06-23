@@ -1,7 +1,7 @@
-import { X, Star, StarIcon } from "lucide-react";
+import { X, Star, StarIcon, Trash } from "lucide-react";
 import { useEffect } from "react";
 
-function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites = [] }) {
+function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites, onRemoveRecipe }) {
   useEffect(() => {
     const modal = document.getElementById('view-recipe-modal');
     if (isOpen && recipe && modal) {
@@ -13,6 +13,13 @@ function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites = []
   
   const handleClose = () => {
     if (onClose) onClose();
+  };
+
+  const handleRemoveRecipe = () => {
+    if (onRemoveRecipe) {
+      onRemoveRecipe(recipe);
+      handleClose();
+    }
   };
 
   return (
@@ -104,29 +111,14 @@ function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites = []
               </ol>
             </div>
           )}
+          {/* Remove recipe button */}
+          <div className="flex justify-center space-x-4 mt-6">
+            <button className="btn btn-error" onClick={handleRemoveRecipe}>
+              <Trash className="h-6 w-6" />
+                Verwijder recept
+            </button>
+          </div>
 
-          {/* Nutritional information (if available) */}
-          {recipe.nutritionalInfo && (
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-2">Voedingswaarde (per portie)</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(recipe.nutritionalInfo).map(([key, value]) => (
-                  <div key={key} className="bg-gray-50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-sm">{key}</p>
-                    <p className="font-semibold">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Additional notes */}
-          {recipe.notes && (
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-2">Tips & Notities</h3>
-              <p className="text-gray-700">{recipe.notes}</p>
-            </div>
-          )}
         </div>
       </div>
       <form method="dialog" className="modal-backdrop">

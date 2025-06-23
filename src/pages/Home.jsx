@@ -47,7 +47,17 @@ function Home() {
   const handleAddRecipe = (newRecipe) => {
     setRecepten(prev => Array.isArray(prev) ? [...prev, newRecipe] : [newRecipe]);
   };
-  
+
+  const handleRemoveRecipe = (recipe) => {
+    setRecepten(prev => prev.filter(r => r.title !== recipe.title));
+  };
+  useEffect(() => {
+    const modal = document.getElementById('view-recipe-modal');
+    if (isViewModalOpen && selectedRecipe && modal) {
+      modal.showModal();
+    }
+  }, [isViewModalOpen, selectedRecipe]);
+
   const handleToggleFavorite = (recipe) => {
     setFavorites(prev => {
       const isFavorited = prev.some(fav => fav.title === recipe.title);
@@ -77,6 +87,7 @@ function Home() {
         recipe={selectedRecipe}
         onToggleFavorite={handleToggleFavorite}
         favorites={favorites}
+        onRemoveRecipe={handleRemoveRecipe}
       />
     </>
   );
