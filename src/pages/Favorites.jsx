@@ -7,7 +7,7 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     try {
       const savedFavorites = localStorage.getItem('favorites');
       if (savedFavorites) {
-        return JSON.parse(savedFavorites);
+        return JSON.parse(savedFavorites); // array van titels
       }
     } catch (error) {
       console.error("Fout bij het laden van favorieten:", error);
@@ -17,7 +17,20 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
   
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-    useEffect(() => {
+  const [recepten] = useState(() => {
+    try {
+      const savedRecepten = localStorage.getItem('recepten');
+      if (savedRecepten) {
+        return JSON.parse(savedRecepten);
+      }
+    } catch (error) {
+      console.error("Fout bij het laden van recepten:", error);
+    }
+    return [];
+  });
+  const favoriteRecipes = recepten.filter(r => favorites.includes(r.title));
+
+  useEffect(() => {
     if (favorites) {
       try {
         localStorage.setItem('favorites', JSON.stringify(favorites));
@@ -36,25 +49,14 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     setIsViewModalOpen(false);
   };  const handleToggleFavorite = (recipe) => {
     try {
-      // Maak een simpelere kopie van het recept om op te slaan (minder data)
-      const simpleRecipe = {
-        title: recipe.title,
-        description: recipe.description,
-        image: recipe.image,
-        cookingTime: recipe.cookingTime,
-        difficulty: recipe.difficulty,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients
-      };
-
       setFavorites(prev => {
-        const isFavorited = prev.some(fav => fav.title === recipe.title);
+        const isFavorited = prev.includes(recipe.title);
         if (isFavorited) {
           // Verwijder uit favorieten
-          return prev.filter(fav => fav.title !== recipe.title);
+          return prev.filter(title => title !== recipe.title);
         } else {
           // Voeg toe aan favorieten
-          return [...prev, simpleRecipe];
+          return [...prev, recipe.title];
         }
       });
     } catch (error) {
@@ -96,17 +98,17 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     <>
       <h1 className="text-2xl font-bold mb-6">Favorieten</h1>
       <Cards 
-        cards={favorites} 
+        cards={favoriteRecipes} 
         onViewRecipe={handleViewRecipe} 
         onToggleFavorite={handleToggleFavorite} 
-        favorites={favorites}
+        favorites={favoriteRecipes}
       />        
       <RecipeModal 
         isOpen={isViewModalOpen}
         onClose={handleCloseViewModal}
         recipe={selectedRecipe}
         onToggleFavorite={handleToggleFavorite}
-        favorites={favorites}
+        favorites={favoriteRecipes}
         onRemoveRecipe={handleRemoveRecipe}
       />
       <MakeRecipeModal onAddRecipe={handleAddRecipe} />

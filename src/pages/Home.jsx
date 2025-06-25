@@ -19,7 +19,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
     try {
       const savedFavorites = localStorage.getItem('favorites');
       if (savedFavorites) {
-        return JSON.parse(savedFavorites);
+        return JSON.parse(savedFavorites); // array van titels
       }
     } catch (error) {
       console.error("Fout bij het laden van favorieten:", error);
@@ -76,25 +76,14 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
   }, [isViewModalOpen, selectedRecipe]);
   const handleToggleFavorite = (recipe) => {
     try {
-      // Maak een simpelere kopie van het recept om op te slaan (minder data)
-      const simpleRecipe = {
-        title: recipe.title,
-        description: recipe.description,
-        image: recipe.image,
-        cookingTime: recipe.cookingTime,
-        difficulty: recipe.difficulty,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients
-      };
-
       setFavorites(prev => {
-        const isFavorited = prev.some(fav => fav.title === recipe.title);
+        const isFavorited = prev.includes(recipe.title);
         if (isFavorited) {
           // Verwijder uit favorieten
-          return prev.filter(fav => fav.title !== recipe.title);
+          return prev.filter(title => title !== recipe.title);
         } else {
           // Voeg toe aan favorieten
-          return [...prev, simpleRecipe];
+          return [...prev, recipe.title];
         }
       });
     } catch (error) {
@@ -103,6 +92,9 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
     }
   };
   
+  // Zoek de volledige recepten voor de favorieten
+  const favoriteRecipes = recepten.filter(r => favorites.includes(r.title));
+  
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Recepten</h1>
@@ -110,7 +102,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
         cards={recepten} 
         onViewRecipe={handleViewRecipe} 
         onToggleFavorite={handleToggleFavorite} 
-        favorites={favorites} 
+        favorites={favoriteRecipes} // geef de volledige recepten van favorieten door
       />      
       <MakeRecipeModal onAddRecipe={handleAddRecipe} />
       <RecipeModal 
@@ -118,7 +110,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
         onClose={handleCloseViewModal}
         recipe={selectedRecipe}
         onToggleFavorite={handleToggleFavorite}
-        favorites={favorites}
+        favorites={favoriteRecipes}
         onRemoveRecipe={handleRemoveRecipe}
       />
     </>
