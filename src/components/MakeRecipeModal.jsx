@@ -79,7 +79,7 @@ function MakeRecipeModal({ onAddRecipe }) {
               {newRecipe.instructions.map((instr, idx) => (
                 <li key={idx} className="flex justify-between items-center">
                   {instr}
-                  <button type="button" onClick={() => removeInstruction(idx)} className="btn btn-xs btn-error ml-2">Verwijder</button>
+                  <button type="button" onClick={() => removeInstruction(idx)} className="btn btn-xs btn-error ml-2 mt-2">×</button>
                 </li>
               ))}
             </ul>
