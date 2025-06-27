@@ -8,7 +8,8 @@ export function useRecipeForm() {
     cookingTime: '',
     difficulty: '',
     servings: 2,
-    ingredients: []
+    ingredients: [],
+    instructions: []
   });
 
   const [newIngredient, setNewIngredient] = useState({
@@ -86,6 +87,25 @@ export function useRecipeForm() {
     });
   };
 
+  const [newInstruction, setNewInstruction] = useState('');
+
+  function addInstruction() {
+    if (newInstruction.trim()) {
+      setNewRecipe(prev => ({
+        ...prev,
+        instructions: [...prev.instructions, newInstruction]
+      }));
+      setNewInstruction('');
+    }
+  }
+
+  function removeInstruction(index) {
+    setNewRecipe(prev => ({
+      ...prev,
+      instructions: prev.instructions.filter((_, i) => i !== index)
+    }));
+  }
+
   const resetForm = () => {
     setNewRecipe({
       title: '',
@@ -94,7 +114,8 @@ export function useRecipeForm() {
       cookingTime: '',
       difficulty: 'Gemakkelijk',
       servings: 2,
-      ingredients: []
+      ingredients: [],
+      instructions: []
     });
   };
 
@@ -108,6 +129,10 @@ export function useRecipeForm() {
     addIngredient,
     removeIngredient,
     toggleIngredientCheck,
-    resetForm
+    resetForm,
+    newInstruction,
+    setNewInstruction,
+    addInstruction,
+    removeInstruction
   };
 }

@@ -18,7 +18,11 @@ function MakeRecipeModal({ onAddRecipe }) {
     addIngredient,
     removeIngredient,
     toggleIngredientCheck,
-    resetForm
+    resetForm,
+    newInstruction,
+    setNewInstruction,
+    addInstruction,
+    removeInstruction
   } = useRecipeForm();
 
   const handleSubmit = (e) => {
@@ -56,6 +60,30 @@ function MakeRecipeModal({ onAddRecipe }) {
             removeIngredient={removeIngredient}
             toggleIngredientCheck={toggleIngredientCheck}
           />
+
+          <div className="form-control">
+            <label className="label">Instructies / Bereidingswijze</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newInstruction}
+                onChange={e => setNewInstruction(e.target.value)}
+                placeholder="Voeg een stap toe"
+                className="input input-bordered flex-1"
+              />
+              <button type="button" className="btn btn-primary" onClick={addInstruction}>
+                Voeg toe
+              </button>
+            </div>
+            <ul className="list-decimal pl-5 mt-2">
+              {newRecipe.instructions.map((instr, idx) => (
+                <li key={idx} className="flex justify-between items-center">
+                  {instr}
+                  <button type="button" onClick={() => removeInstruction(idx)} className="btn btn-xs btn-error ml-2">Verwijder</button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <ImagePreview 
             recipe={newRecipe} 
