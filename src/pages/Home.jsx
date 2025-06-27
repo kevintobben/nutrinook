@@ -12,7 +12,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
     } catch (error) {
       console.error("Fout bij het laden van recepten:", error);
     }
-    return []; // Return empty array as default when nothing in localStorage or on error
+    return [];
   });
   
   const [favorites, setFavorites] = useState(() => {
@@ -30,7 +30,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     useEffect(() => {
-    if (recepten) { // Only save to localStorage if recepten is defined
+    if (recepten) { // Alleen opslaan als recepten gedefinieerd is
       try {
         localStorage.setItem('recepten', JSON.stringify(recepten));
       } catch (error) {
