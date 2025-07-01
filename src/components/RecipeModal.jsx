@@ -12,6 +12,8 @@ function RecipeModal({ isOpen, onClose, recipe, onToggleFavorite, favorites, onR
   if (!recipe) return null;
   
   const handleClose = () => {
+    const modal = document.getElementById('view-recipe-modal');
+    if (modal) modal.close();
     if (onClose) onClose();
   };
 
