@@ -7,7 +7,7 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     try {
       const savedFavorites = localStorage.getItem('favorites');
       if (savedFavorites) {
-        return JSON.parse(savedFavorites); // array van titels
+        return JSON.parse(savedFavorites); // array van IDs
       }
     } catch (error) {
       console.error("Fout bij het laden van favorieten:", error);
@@ -28,7 +28,7 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     }
     return [];
   });
-  const favoriteRecipes = recepten.filter(r => favorites.includes(r.title));
+  const favoriteRecipes = recepten.filter(r => favorites.includes(r.id));
 
   useEffect(() => {
     if (favorites) {
@@ -40,6 +40,19 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
     }
   }, [favorites]);
 
+  // Migratie: als favorieten nog titels zijn, vervang door IDs
+  useEffect(() => {
+    if (favorites.length > 0 && typeof favorites[0] === 'string' && recepten.length > 0) {
+      const migrated = favorites.map(fav => {
+        // Zoek recept met deze titel
+        const match = recepten.find(r => r.title === fav);
+        return match && match.id ? match.id : fav;
+      });
+      setFavorites(migrated);
+      localStorage.setItem('favorites', JSON.stringify(migrated));
+    }
+  }, [favorites, recepten]);
+
   const handleViewRecipe = (recipe) => {
     setSelectedRecipe(recipe);
     setIsViewModalOpen(true);
@@ -50,13 +63,13 @@ function Favorites() {  const [favorites, setFavorites] = useState(() => {
   };  const handleToggleFavorite = (recipe) => {
     try {
       setFavorites(prev => {
-        const isFavorited = prev.includes(recipe.title);
+        const isFavorited = prev.includes(recipe.id);
         if (isFavorited) {
           // Verwijder uit favorieten
-          return prev.filter(title => title !== recipe.title);
+          return prev.filter(id => id !== recipe.id);
         } else {
           // Voeg toe aan favorieten
-          return [...prev, recipe.title];
+          return [...prev, recipe.id];
         }
       });
     } catch (error) {
