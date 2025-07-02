@@ -3,10 +3,6 @@ import Cards from '../components/Cards.jsx';
 import MakeRecipeModal from '../components/MakeRecipeModal.jsx';
 import RecipeModal from '../components/RecipeModal.jsx';
 
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-}
-
 function Home() {  const [recepten, setRecepten] = useState(() => {
     try {
       const savedRecepten = localStorage.getItem('recepten');
@@ -23,7 +19,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
     try {
       const savedFavorites = localStorage.getItem('favorites');
       if (savedFavorites) {
-        return JSON.parse(savedFavorites); // array van IDs
+        return JSON.parse(savedFavorites); // array van titels
       }
     } catch (error) {
       console.error("Fout bij het laden van favorieten:", error);
@@ -63,9 +59,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
   };
   
   const handleAddRecipe = (newRecipe) => {
-    // Voeg een uniek ID toe aan het recept
-    const recipeWithId = { ...newRecipe, id: generateId() };
-    setRecepten(prev => Array.isArray(prev) ? [...prev, recipeWithId] : [recipeWithId]);
+    setRecepten(prev => Array.isArray(prev) ? [...prev, newRecipe] : [newRecipe]);
   };
   const handleRemoveRecipe = (recipe) => {
     // Verwijder uit recepten
@@ -83,13 +77,13 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
   const handleToggleFavorite = (recipe) => {
     try {
       setFavorites(prev => {
-        const isFavorited = prev.includes(recipe.id);
+        const isFavorited = prev.includes(recipe.title);
         if (isFavorited) {
           // Verwijder uit favorieten
-          return prev.filter(id => id !== recipe.id);
+          return prev.filter(id => id !== recipe.title);
         } else {
           // Voeg toe aan favorieten
-          return [...prev, recipe.id];
+          return [...prev, recipe.title];
         }
       });
     } catch (error) {
@@ -99,7 +93,7 @@ function Home() {  const [recepten, setRecepten] = useState(() => {
   };
   
   // Zoek de volledige recepten voor de favorieten
-  const favoriteRecipes = recepten.filter(r => favorites.includes(r.id));
+  const favoriteRecipes = recepten.filter(r => favorites.includes(r.title));
   
   return (
     <>
